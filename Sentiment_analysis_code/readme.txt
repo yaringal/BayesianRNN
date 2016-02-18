@@ -1,0 +1,1 @@
+This code requires Theano (version 0.7.0) and a Keras fork (https://github.com/yaringal/keras, branch BayesianRNN).

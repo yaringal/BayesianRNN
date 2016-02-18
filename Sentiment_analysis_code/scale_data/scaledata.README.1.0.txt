@@ -1,0 +1,125 @@
+
+=======
+
+Introduction
+
+This README v1.0 (June, 2005) for the v0.9 and v1.0 scale datasets comes
+from the URL
+http://www.cs.cornell.edu/people/pabo/movie-review-data .
+
+=======
+
+Citation Info 
+
+This data was first used in Bo Pang and Lillian Lee,
+``Seeing stars: Exploiting class relationships for sentiment categorization
+with respect to rating scales.'', Proceedings of the ACL, 2005.
+  
+@InProceedings{Pang+Lee:05a,
+  author =       {Bo Pang and Lillian Lee},
+  title =        {Seeing stars: Exploiting class relationships for sentiment
+                  categorization with respect to rating scales},
+  booktitle =    {Proceedings of the ACL},
+  year =         2005
+}
+
+=======
+
+Data Format Summary 
+
+There are two tar files, roughly corresponding to (1) the reviews
+after pre-processing, including subjectivity extraction (i.e., the
+data we used in our experiments) and (2) the reviews after very light
+pre-processing (provided in case these prove convenient to others; to
+date we have not experimented directly with them).
+
+
+(1) scale_data.tar.gz (scale dataset v1.0): contains this readme and
+  data files that were used in the experiments described in Pang/Lee
+  ACL 2005.
+
+  Specifically: 
+
+  Each sub-directory $author contains data extracted from reviews written 
+  by some single author; altogether, there are four author sub-directories.
+
+  In each such sub-directory, each line in the file subj.$author
+  corresponds to the subjective extract of one review.  The
+  corresponding line in the file id.$author specifies the source html
+  file for the review from which the extract was created; these source
+  files can be found in polarity_html.zip, available from
+  http://www.cs.cornell.edu/people/pabo/movie-review-data ("Pool of
+  27886 unprocessed html files").
+
+  We automatically tokenized and applied pattern matching technique to 
+  remove explicit rating indications from the reviews.  Subjective 
+  sentences were automatically identified using the system described in 
+  our 2004 ACL paper
+  (http://www.cs.cornell.edu/home/llee/papers/cutsent.home.html).  We
+  did not apply any feature selection algorithms in our experiments;
+  we simply used all unigrams as features, and used feature
+  presence/absence to create feature vectors.
+  
+  The class label for each extract is given in the corresponding line
+  of the file label.3class.$author (for the {0,1,2} three-category
+  classification task) or label.4class.$author (for the {0,1,2,3}
+  four-categority classification task).  
+
+  For those who wish to experiment with more fine-grained labels, we
+  also provide normalized ratings (in the range [0-1] with stepsize
+  0.1 or smaller, depending on the smallest unit used by the author)
+  in the file rating.$author.
+
+  EXAMPLE: consider the information corresponding to the extract
+  represented by the first line of Steve+Rhodes/subj.Steve+Rhodes:
+ 
+  % paste Steve+Rhodes/label.3class.Steve+Rhodes \
+  Steve+Rhodes/label.4class.Steve+Rhodes Steve+Rhodes/id.Steve+Rhodes \
+  Steve+Rhodes/rating.Steve+Rhodes | head -1
+  0       0       11790   0.1
+  
+  The class labels for both the three-class and four-class tasks are 0.
+  The original review was written by Steve Rhodes and extracted from
+  11790.html (see above for location of original reviews).
+  The numerical rating converted from the four-star system used by the author 
+  (1/2 star was the smallest unit he employed) is 0.1 (see section
+  "Label Decision" below for more information on rating normalization).
+  
+  	 
+(2) scale_whole_review.tar.gz (scale dataset v0.9): Contains this
+  README and the review files in their entireties before passing
+  through tokenization, sentence separation, and subjectivity
+  extraction.
+  
+  Specifically:
+
+  The entire review for each subjective extract in $author/subj.$author 
+  (of scale dataset v1.0) can be identified by the id number specified
+  in the correponding line of $author/id.$author and located as file
+  $author/txt.parag/$id.txt
+  where each line of $id.txt corresponds to one paragraph of the review.
+   
+=======
+
+Label Decision 
+
+The numerical ratings were derived from texts in the original html
+files.  Note that with our particular conversion scheme, 0-to-4 stars
+within a four star system translates into 0.1-to-0.9 in our normalized
+numerical ratings, whereas 0-to-5 stars within a five star system
+translates into 0-to-1.  (The reasoning was that in a four-star
+system, an author is more likely to assign "endpoint" scores because
+the dynamic range of the rating scheme is smaller.)
+ 
+The class labels were then derived from the normalized numerical ratings.    
+  * for the three-class task: 
+  	0: rating <= 0.4
+	1: 0.4 < rating < 0.7
+	2: rating >= 0.7
+
+  * for the four-class task: 
+        0: rating <=.3
+        1: .4 <= rating <=.5
+	2: .6 <= rating <= .7
+	3: .8 <= rating
+
