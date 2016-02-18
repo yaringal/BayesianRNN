@@ -9,7 +9,7 @@ from __future__ import print_function
 
 import sys
 sys.path.insert(0, "/usr/local/cuda-7.0/bin")
-sys.path.insert(0, "../keras") # point this to the local keras fork (https://github.com/yaringal/keras/tree/BayesianRNN)
+sys.path.insert(0, "../keras") # point this to your local fork of https://github.com/yaringal/keras
 sys.path.insert(0, "../Theano")
 import theano
 # Create ram disk: mount -t tmpfs -o size=512m tmpfs /mnt/ramdisk
@@ -38,8 +38,10 @@ seed = 0
 
 # In[5]:
 
-print("Expected args: p_W, p_U, p_dense, p_emb, weight_decay, batch_size, maxlen")
-# sys.argv = ["", "0.5", "0.5", "0.5", "0.5", "1e-6", "128", "200"]
+if len(sys.argv) == 1:
+  print("Expected args: p_W, p_U, p_dense, p_emb, weight_decay, batch_size, maxlen")
+  print("Using default args:")
+  sys.argv = ["", "0.5", "0.5", "0.5", "0.5", "1e-6", "128", "200"]
 args = [float(a) for a in sys.argv[1:]]
 print(args)
 p_W, p_U, p_dense, p_emb, weight_decay, batch_size, maxlen = args
