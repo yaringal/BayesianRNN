@@ -9,8 +9,8 @@ from __future__ import print_function
 
 import sys
 sys.path.insert(0, "/usr/local/cuda-7.0/bin")
-sys.path.insert(0, "../keras")
-sys.path.insert(0, "../Theano"); sys.path.insert(0, "../../Theano")
+sys.path.insert(0, "../keras") # point this to the local keras fork (https://github.com/yaringal/keras/tree/BayesianRNN)
+sys.path.insert(0, "../Theano")
 import theano
 # Create ram disk: mount -t tmpfs -o size=512m tmpfs /mnt/ramdisk
 # Use flag THEANO_FLAGS='base_compiledir=/mnt/ramdisk' python script.py
