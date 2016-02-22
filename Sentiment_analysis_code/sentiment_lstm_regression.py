@@ -1,6 +1,6 @@
-# Train a Bayesian LSTM on the IMDB sentiment classification task.
+# Train a Bayesian LSTM on a sentiment classification task.
 # GPU command:
-#     THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32 python imdb_lstm.py
+#     THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32 python script.py
 
 # In[4]:
 
@@ -30,7 +30,6 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
 from keras.layers.embeddings import Embedding, DropoutEmbedding
 from keras.layers.recurrent import LSTM, GRU, DropoutLSTM, NaiveDropoutLSTM
-from keras.datasets import imdb
 from keras.callbacks import ModelCheckpoint, ModelTest
 from keras.regularizers import l2
 seed = 0
@@ -48,7 +47,7 @@ p_W, p_U, p_dense, p_emb, weight_decay, batch_size, maxlen = args
 batch_size = int(batch_size)
 maxlen = int(maxlen)
 folder = "/scratch/home/Projects/rnn_dropout/exps/"
-filename = ("imdb_DropoutLSTM_pW_%.2f_pU_%.2f_pDense_%.2f_pEmb_%.2f_reg_%f_batch_size_%d_cutoff_%d_epochs" 
+filename = ("sa_DropoutLSTM_pW_%.2f_pU_%.2f_pDense_%.2f_pEmb_%.2f_reg_%f_batch_size_%d_cutoff_%d_epochs" 
   % (p_W, p_U, p_dense, p_emb, weight_decay, batch_size, maxlen))
 print(filename)
 

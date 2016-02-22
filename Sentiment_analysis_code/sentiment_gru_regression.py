@@ -1,6 +1,6 @@
-# Train a naiev dropout LSTM on the IMDB sentiment classification task.
+# Train a Bayesian GRU on a sentiment classification task.
 # GPU command:
-#     THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32 python imdb_lstm.py
+#     THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32 python script.py
 
 # In[4]:
 
@@ -29,8 +29,7 @@ from keras.utils import np_utils
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
 from keras.layers.embeddings import Embedding, DropoutEmbedding
-from keras.layers.recurrent import LSTM, GRU, DropoutLSTM, NaiveDropoutLSTM
-from keras.datasets import imdb
+from keras.layers.recurrent import LSTM, GRU, DropoutGRU, NaiveDropoutLSTM
 from keras.callbacks import ModelCheckpoint, ModelTest
 from keras.regularizers import l2
 seed = 0
@@ -41,14 +40,19 @@ seed = 0
 if len(sys.argv) == 1:
   print("Expected args: p_W, p_U, p_dense, p_emb, weight_decay, batch_size, maxlen")
   print("Using default args:")
-  sys.argv = ["", "0.5", "0.5", "0.5", "0.5", "1e-6", "128"]
+  sys.argv = ["", "0.5", "0.5", "0.5", "0.5", "1e-6", "128", "200"]
 args = [float(a) for a in sys.argv[1:]]
 print(args)
-p_W, p_U, p_dense, p_emb, weight_decay, batch_size = args
+p_W, p_U, p_dense, p_emb, weight_decay, batch_size, maxlen = args
 batch_size = int(batch_size)
+maxlen = int(maxlen)
+folder = "/scratch/home/Projects/rnn_dropout/exps/"
+filename = ("sa_DropoutLSTM_pW_%.2f_pU_%.2f_pDense_%.2f_pEmb_%.2f_reg_%f_batch_size_%d_cutoff_%d_epochs" 
+  % (p_W, p_U, p_dense, p_emb, weight_decay, batch_size, maxlen))
+print(filename)
 
 nb_words = 20000
-maxlen = 200  # cut texts after this number of words (among top max_features most common words)
+# maxlen = 20  # cut texts after this number of words (among top max_features most common words)
 start_char = 1
 oov_char = 2
 index_from = 3
@@ -119,7 +123,7 @@ print('X_test shape:', X_test.shape)
 print('Build model...')
 model = Sequential()
 model.add(DropoutEmbedding(nb_words + index_from, 128, W_regularizer=l2(weight_decay), p=p_emb))
-model.add(NaiveDropoutLSTM(128, 128, truncate_gradient=200, W_regularizer=l2(weight_decay), 
+model.add(DropoutGRU(128, 128, truncate_gradient=maxlen, W_regularizer=l2(weight_decay), 
                       U_regularizer=l2(weight_decay), 
                       b_regularizer=l2(weight_decay), 
                       p_W=p_W, p_U=p_U))
@@ -139,9 +143,8 @@ model.compile(loss='mean_squared_error', optimizer=optimiser)
 # In[ ]:
 
 print("Train...")
-# folder = "/scratch/home/Projects/rnn_dropout/exps/"
-# checkpointer = ModelCheckpoint(filepath=folder+filename, 
-#     verbose=1, append_epoch_name=True, save_every_X_epochs=10)
+# checkpointer = ModelCheckpoint(filepath=folder+filename+".hdf5", 
+    # verbose=1, append_epoch_name=True, save_every_X_epochs=50)
 modeltest_1 = ModelTest(X_train[:100], mean_y_train + std_y_train * np.atleast_2d(Y_train[:100]).T, 
                       test_every_X_epochs=1, verbose=0, loss='euclidean',
                       mean_y_train=mean_y_train, std_y_train=std_y_train, tau=0.1)
@@ -152,6 +155,8 @@ model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=1250,
 # score, acc = model.evaluate(X_test, y_test, batch_size=batch_size, show_accuracy=True)
 # print('Test score:', score)
 # print('Test accuracy:', acc)
+
+# model.save_weights(folder+filename+"_250.hdf5", overwrite=True)
 
 
 # In[ ]:

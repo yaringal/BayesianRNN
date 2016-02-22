@@ -1,6 +1,6 @@
-# Train a naive dropout GRU on the IMDB sentiment classification task.
+# Train a naive dropout GRU on a sentiment classification task.
 # GPU command:
-#     THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32 python imdb_lstm.py
+#     THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32 python script.py
 
 # In[4]:
 
@@ -30,7 +30,6 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
 from keras.layers.embeddings import Embedding, DropoutEmbedding
 from keras.layers.recurrent import LSTM, GRU, DropoutLSTM, NaiveDropoutGRU
-from keras.datasets import imdb
 from keras.callbacks import ModelCheckpoint, ModelTest
 from keras.regularizers import l2
 seed = 0
