@@ -15,5 +15,6 @@ All other hypers being identical to Zaremba et al.: learning rate decay was not 
 Single model test perplexity is improved from Zaremba et al.'s 78.4 to 76.5. Validation perplexity is reduced from 82.2 to 79.1, see [log](LM_code/main_new_dropout_SOTA.log).
 
 References:
-Gal, Y, "A Theoretically Grounded Application of Dropout in Recurrent Neural Networks", 2015.
-Zaremba, W, Sutskever, I, Vinyals, O, "Recurrent neural network regularization", 2014.
+
+* Gal, Y, "A Theoretically Grounded Application of Dropout in Recurrent Neural Networks", 2015.
+* Zaremba, W, Sutskever, I, Vinyals, O, "Recurrent neural network regularization", 2014.
