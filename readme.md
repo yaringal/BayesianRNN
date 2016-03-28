@@ -5,9 +5,11 @@ This is the code used for the experiments in the paper ["A Theoretically Grounde
 
 ## Update 2 (March 28): 
 The script [main_new_dropout_SOTA](LM_code/main_new_dropout_SOTA.lua) implements Bayesian LSTM (Gal, 2015) for the large model of Zaremba et al. (2014). In the setting of Zaremba et al. the states are not reset and the testing is done with a single pass through the test set. The only changes I've made to the setting of Zaremba et al. are:
+
 1. dropout technique (using a Bayesian LSTM)
 2. weight decay (which was chosen to be zero in Zaremba et al.)
 3. a slightly smaller network was used to fit on my GPU (1250 units per layer instead of 1500)
+
 All other hypers being identical to Zaremba et al.: learning rate decay was not tuned for my setting and is used following Zaremba et al., and the sequences are initialised with the previous state following Zaremba et al. (unlike in main_dropout.lua). Dropout parameters were optimised with grid search (tying dropout_x & dropout_h and dropout_i & dropout_o) over validation perplexity (optimal values are 0.3 and 0.5 compared Zaremba et al.'s 0.6).
 
 Single model test perplexity is improved from Zaremba et al.'s 78.4 to 76.5. Validation perplexity is reduced from 82.2 to 79.1, see [log](LM_code/main_new_dropout_SOTA.log).
