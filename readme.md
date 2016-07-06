@@ -12,7 +12,12 @@ The script [main_new_dropout_SOTA](LM_code/main_new_dropout_SOTA.lua) implements
 
 All other hypers being identical to Zaremba et al.: learning rate decay was not tuned for my setting and is used following Zaremba et al., and the sequences are initialised with the previous state following Zaremba et al. (unlike in main_dropout.lua). Dropout parameters were optimised with grid search (tying dropout_x & dropout_h and dropout_i & dropout_o) over validation perplexity (optimal values are 0.3 and 0.5 compared Zaremba et al.'s 0.6).
 
-Single model validation perplexity is improved from Zaremba et al.'s 82.2 to 79.1. Test perplexity is reduced from 78.4 to 76.5, see [log](LM_code/main_new_dropout_SOTA.log). **Evaluating the model with MC dropout with 2000 samples, test perplexity is further reduced to 75.06** (with 100 samples test perplexity is 75.3).
+Single model validation perplexity is improved from Zaremba et al.'s 82.2 to 79.1. Test perplexity is reduced from 78.4 to 76.5, see [log](LM_code/main_new_dropout_SOTA.log). Evaluating the model with MC dropout with 2000 samples, test perplexity is further reduced to 75.06 (with 100 samples test perplexity is 75.3).
+
+## Update 3 (July 6): 
+I updated the code with the experiments used in the arXiv paper revision from 25 May 2016 ([version 3](http://arxiv.org/abs/1512.05287v3)).
+In the updated code restriction 3 above (smaller network size) was removed, following a Lua update that solved a memory leak.
+[main_new_dropout_SOTA_v3](LM_code/main_new_dropout_SOTA_v3.lua) implements the MC dropout experiment used in the paper, with **single model test perplexity improved from Zaremba et al.'s 78.4 to 73.4 (using MC dropout at test time) and 75.2 with the dropout approximation**. Validation perplexity is reduced from 82.2 to 77.9.
 
 
 References:
