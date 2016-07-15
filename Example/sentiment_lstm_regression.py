@@ -49,6 +49,11 @@ dataset = loader(init_seed, maxlen, nb_words, skip_top, test_split)
 X_train, X_test, Y_train, Y_test = dataset.X_train, dataset.X_test, dataset.Y_train, dataset.Y_test
 mean_y_train, std_y_train = dataset.mean_y_train, dataset.std_y_train
 
+X_train = np.asarray(X_train)
+X_test  = np.asarray(X_test)
+Y_train = np.asarray(Y_train)
+Y_test  = np.asarray(Y_test)
+
 # Set seed:
 np.random.seed(global_seed)
 

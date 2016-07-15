@@ -3,6 +3,12 @@ from keras.callbacks import Callback
 from keras import backend as K
 from keras import models
 
+def standardize_X(X):
+    if type(X) == list:
+        return X
+    else:
+        return [X]
+
 class ModelTest(Callback):
     ''' Test model at the end of every X epochs.
 
@@ -61,9 +67,10 @@ class ModelTest(Callback):
             - [Dropout: A simple way to prevent neural networks from overfitting](http://jmlr.org/papers/v15/srivastava14a.html)
             - [Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Learning](http://arxiv.org/abs/1506.02142)
         '''
-        X = models.standardize_X(X)
+        X = standardize_X(X)
         if self._predict_stochastic is None: # we only get self.model after init
-        	self._predict_stochastic = K.function([self.model.X_test], [self.model.y_train])
+        	self._predict_stochastic = K.function([self.model.inputs[0]], [self.model.outputs[0]],
+                                                      givens={K.learning_phase(): np.uint8(1)})
         return self.model._predict_loop(self._predict_stochastic, X, batch_size, verbose)[0]
 
 
