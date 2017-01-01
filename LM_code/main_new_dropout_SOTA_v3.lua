@@ -213,9 +213,9 @@ local function sample_noise(state)
   -- once for all words.
   for b = 1, params.batch_size do
     for i = 1, params.seq_length do
-      local x = state.data[state.pos + i - 1]
+      local x = state.data[state.pos + i - 1][b]
       for j = i+1, params.seq_length do
-        if state.data[state.pos + j - 1] == x then
+        if state.data[state.pos + j - 1][b] == x then
           model.noise_x[j][b] = model.noise_x[i][b]
           -- we only need to override the first time; afterwards subsequent are copied:
           break
