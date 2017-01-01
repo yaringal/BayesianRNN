@@ -19,6 +19,14 @@ I updated the code with the experiments used in the arXiv paper revision from 25
 In the updated code restriction 3 above (smaller network size) was removed, following a Lua update that solved a memory leak.
 [main_new_dropout_SOTA_v3](LM_code/main_new_dropout_SOTA_v3.lua) implements the MC dropout experiment used in the paper, with **single model test perplexity improved from Zaremba et al.'s 78.4 to 73.4 (using MC dropout at test time) and 75.2 with the dropout approximation**. Validation perplexity is reduced from 82.2 to 77.9.
 
+## Update 4 (January 1): 
+I updated the script `main_new_dropout_SOTA_v3.lua` fixing a bug that @helson73 found (issue #4). In the original script, word embedding dropout was erroneously sampled anew for each word token (ie the word token masks were not tied in the LM experiment, unlike the sentiment analysis experiment). I fixed the code and re-ran the experiments with `Variational (untied weights) large LSTM`, giving a small improvement in perplexity:
+
+- Validation set perplexity: 77.457 (down from 77.9)
+- Test set perplexity: 75.112 (down from 75.2)
+- Test set perplexity (MC): 73.318975131 (down from 73.4)
+
+The improvement is rather small because the sequence length in the LM exps is 20. This means that most sequences will have unique words (ie a word would not appear multiple times in the sequence), hence having the masks untied in such sequences is the same as having the masks tied. Note that in longer sequences such as in the sentiment analysis exps (with sequence length of 200) most sequences will have common words (such as stop words) appearing multiple times in the sequence.
 
 References:
 
