@@ -1,7 +1,7 @@
 This is the code used for the experiments in the paper ["A Theoretically Grounded Application of Dropout in Recurrent Neural Networks"](http://mlg.eng.cam.ac.uk/yarin/publications.html#Gal2015Theoretically). The [sentiment analysis experiment](Sentiment_analysis_code/) relies on a [fork of keras](https://github.com/yaringal/keras/tree/BayesianRNN) which implements Bayesian LSTM, Bayesian GRU, embedding dropout, and MC dropout. The [language model experiment](LM_code/) extends [wojzaremba's lua code](https://github.com/wojzaremba/lstm).
 
 ## Update 1 (Feb 22): 
-[keras](https://github.com/fchollet/keras) now supports dropout in RNNs following the implementation above. A simplified example of the [sentiment analysis experiment](Sentiment_analysis_code/) using the latest keras implementation is given in [here](Example/).
+[Keras](https://keras.io/layers/recurrent/) now supports dropout in RNNs following the implementation above. A simplified example of the [sentiment analysis experiment](Sentiment_analysis_code/) using the latest keras implementation is given in [here](Example/).
 
 ## Update 2 (March 28): 
 The script [main_new_dropout_SOTA](LM_code/main_new_dropout_SOTA.lua) implements Bayesian LSTM (Gal, 2015) for the large model of Zaremba et al. (2014). In the setting of Zaremba et al. the states are not reset and the testing is done with a single pass through the test set. The only changes I've made to the setting of Zaremba et al. are:
